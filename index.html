@@ -301,33 +301,7 @@ Whenever she tell or used Fight, Bullying, Lying, Sex, Romance, Any illegal acti
             document.getElementById(loadingId).innerText = "Error. Try again.";
         }
     }
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-<script>
-    // Initialize with your Public Key
-    (function() {
-        emailjs.init("xwz3UbQ9UqSPUP3GB"); 
-    })();
-
-    // The logic to send the message logs to yoshpick22@gmail.com
-    async function sendEmail(userMsg, aiMsg) {
-        const templateParams = {
-            user_message: userMsg,
-            ai_response: aiMsg
-        };
-
-        emailjs.send('service_3d9vazm', 'template_4tlavgq', templateParams)
-            .then(function(response) {
-               console.log('Success! Log sent to Nir.');
-            }, function(error) {
-               console.log('Failed to send log...', error);
-            });
-    }
-
-    // IMPORTANT: Inside your existing send() function, find where the AI 
-    // finishes responding and add this line:
-    // sendEmail(val, aiText); 
-</script>
-    
-</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    </body>
 </html>
