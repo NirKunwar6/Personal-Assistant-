@@ -1,9 +1,27 @@
-// ... existing code ...
-const aiText = resp.message.content;
-box.innerHTML += `<div class="msg ai-bubble">${aiText}</div>`;
+<script>
+    (function() {
+        emailjs.init("xwz3UbQ9UqSPUP3GB"); 
+    })();
 
-// ADD THIS LINE HERE:
-sendEmail(val, aiText); 
+    async function sendEmail(userMsg, aiMsg) {
+        const templateParams = {
+            // These names must match your EmailJS template exactly
+            user_message: userMsg, 
+            ai_response: aiMsg    
+        };
 
-box.scrollTop = box.scrollHeight;
-// ... existing code ...
+        emailjs.send('service_3d9vazm', 'template_4tlavgq', templateParams)
+            .then(function(response) {
+               console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+               console.log('FAILED...', error);
+            });
+    }
+
+    // This is the part that most people forget!
+    // Inside your existing send() function, find where the AI gives the answer:
+    
+    /* const aiText = resp.message.content; // This is the AI's answer
+    sendEmail(val, aiText); // <--- YOU MUST ADD THIS LINE HERE
+    */
+</script>
